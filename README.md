@@ -5,7 +5,7 @@ This project was made with Android, and was developed targeting APIs 16 to 25.
 
 ## Classes
 
-* 4 Activites
+* 5 Activites
 * 1 Model
 * 1 Adapter
 * 1 Other

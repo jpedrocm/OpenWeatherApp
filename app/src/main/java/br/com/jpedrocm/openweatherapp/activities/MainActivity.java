@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 //startActivity(intent);
                 return true;
             case R.id.action_about:
-                //intent = new Intent(this, AboutActivity.class);
-                //startActivity(intent);
+                intent = new Intent(this, AboutActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

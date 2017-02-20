@@ -5,21 +5,15 @@
       tools:context=".MainActivity"
       android:id="@+id/options_menu">
 
-    <item android:id="@+id/action_history"
-          android:title="@string/action_history"
-          android:icon="@drawable/ic_action_history"
-          android:orderInCategory="1"
-          app:showAsAction="ifRoom"/>
-
     <item android:id="@+id/action_settings"
           android:title="@string/action_settings"
           android:icon="@drawable/ic_action_settings"
-          android:orderInCategory="2"
+          android:orderInCategory="1"
           app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_about"
           android:title="@string/action_about"
           android:icon="@drawable/ic_action_about"
-          android:orderInCategory="3"
+          android:orderInCategory="2"
           app:showAsAction="ifRoom"/>
 </menu>

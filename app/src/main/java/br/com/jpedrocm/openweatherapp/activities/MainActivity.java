@@ -84,10 +84,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent;
 
         switch (item.getItemId()) {
-            case R.id.action_history:
-                intent = new Intent(this, CityListActivity.class);
-                startActivity(intent);
-                return true;
             case R.id.action_settings:
                 //intent = new Intent(this, SettingsActivity.class);
                 //startActivity(intent);

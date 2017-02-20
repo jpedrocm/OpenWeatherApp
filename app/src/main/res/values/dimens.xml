@@ -1,0 +1,15 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="bottom_half_weather_page_top_margin">100dp</dimen>
+    <dimen name="dialog_image_margin">5dp</dimen>
+    <dimen name="dialog_text_margin">10dp</dimen>
+    <dimen name="dialog_button_margin">10dp</dimen>
+    <dimen name="dialog_button_padding">10dp</dimen>
+    <dimen name="list_view_margin">2dp</dimen>
+    <dimen name="null_size">0dp</dimen>
+    <dimen name="weather_description_margin">40dp</dimen>
+    <dimen name="weather_image_padding">3dp</dimen>
+    <dimen name="weather_image_size">180dp</dimen>
+</resources>

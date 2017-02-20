@@ -26,7 +26,7 @@
         android:id="@+id/relative_layout_city_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="?attr/actionBarSize"
+        android:layout_marginTop="?attr/actionBarSize"
         android:background="@android:color/white"
         tools:context="br.com.jpedrocm.openweatherapp.activities.CityListActivity">
 

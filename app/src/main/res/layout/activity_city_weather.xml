@@ -25,12 +25,12 @@
     <ScrollView
         android:id="@+id/scroll_view_weather_page"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="?attr/actionBarSize">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="?attr/actionBarSize">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_description"

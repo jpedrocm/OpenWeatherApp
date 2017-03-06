@@ -1,6 +1,7 @@
 package br.com.jpedrocm.openweatherapp.utils;
 
 import android.content.Context;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -11,6 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +22,11 @@ import br.com.jpedrocm.openweatherapp.models.CityModel;
 public class Utils {
 
     private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/find?";
+
+    public static String getDistanceString(double distanceToMarker) {
+        return String.format(Locale.ENGLISH, "%.0f m", distanceToMarker);
+    }
+
     public enum TEMP_UNIT {Celsius, Fahrenheit, Kelvin}
     public enum WIND_UNIT {MS, KMH, MPH}
 
@@ -120,7 +127,7 @@ public class Utils {
         }
     }
 
-    public static List<CityModel> parseJSONData(JSONObject json) throws JSONException {
+    public static List<CityModel> parseJSONData(JSONObject json, LatLng latLng) throws JSONException {
         final String OK_RESPONSE = "200";
         final String HTTP_RESPONSE = "cod";
         final String CITIES_LIST = "list";
@@ -128,10 +135,13 @@ public class Utils {
         final String MAIN = "main";
         final String WIND = "wind";
         final String ID = "id";
+        final String COORD = "coord";
         final String HUMIDITY = "humidity";
         final String CUR_TEMP = "temp";
         final String MAX_TEMP = "temp_max";
         final String MIN_TEMP = "temp_min";
+        final String LAT = "lat";
+        final String LON = "lon";
         final String SPEED = "speed";
         final String CITY_NAME = "name";
         final String DESCRIPTION = "description";
@@ -162,8 +172,20 @@ public class Utils {
                 String description = weatherJSON.getString(DESCRIPTION);
                 String cityId = cityJSON.getString(ID);
 
+                JSONObject coordsJSON = cityJSON.getJSONObject(COORD);
+
+                double lat = coordsJSON.getDouble(LAT);
+                double lon = coordsJSON.getDouble(LON);
+
+                float[] results = new float[5];
+
+                Location.distanceBetween(latLng.latitude, latLng.longitude,
+                        lat, lon, results);
+
+                double distanceToMarker = results[0];
+
                 CityModel city = new CityModel(weatherId, humidity, curTemp, maxTemp, minTemp,
-                        windSpeed, name, description, cityId);
+                        windSpeed, distanceToMarker, name, description, cityId);
 
                 cities.add(city);
             }
@@ -182,5 +204,25 @@ public class Utils {
         urlQuery.append(query);
 
         return urlQuery.toString();
+    }
+
+    public static ArrayList<CityModel> sortByGiven(ArrayList<CityModel> cities, Comparator<CityModel> comparator){
+        ArrayList<CityModel> orderedCities = new ArrayList<>();
+        orderedCities.add(cities.get(0));
+
+        for(int j = 1; j < cities.size(); j++){
+            int i;
+            boolean added = false;
+            for(i = 0; i < orderedCities.size(); i++){
+                if(comparator.compare(cities.get(j), orderedCities.get(i)) < 0) {
+                    orderedCities.add(i, cities.get(j));
+                    added = true;
+                    break;
+                }
+            }
+            if(!added) orderedCities.add(i, cities.get(j));
+        }
+
+        return orderedCities;
     }
 }

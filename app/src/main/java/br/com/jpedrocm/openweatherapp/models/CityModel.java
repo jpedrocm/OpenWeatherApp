@@ -12,6 +12,7 @@ public class CityModel implements Parcelable {
     private double mMaxTemp;
     private double mMinTemp;
     private double mWindSpeed;
+    private double mDistanceToMarker;
 
     private String mName;
     private String mWeatherDescription;
@@ -20,13 +21,14 @@ public class CityModel implements Parcelable {
     public CityModel(){}
 
     public CityModel(int weatherId, int humidity, double currentTemp, double maxTemp, double minTemp, double windSpeed,
-                     String name, String weatherDescription, String cityId){
+                     double distanceToMarker, String name, String weatherDescription, String cityId){
         mWeatherId = weatherId;
         mHumidity = humidity;
         mCurrentTemp = currentTemp;
         mMaxTemp = maxTemp;
         mMinTemp = minTemp;
         mWindSpeed = windSpeed;
+        mDistanceToMarker = distanceToMarker;
         mName = name;
         mWeatherDescription = weatherDescription;
         mCityId = cityId;
@@ -54,6 +56,10 @@ public class CityModel implements Parcelable {
 
     public double getWindSpeed(){ return mWindSpeed;}
 
+    public double getDistanceToMarker(){
+        return mDistanceToMarker;
+    }
+
     public String getName(){
         return mName;
     }
@@ -74,6 +80,7 @@ public class CityModel implements Parcelable {
         mMaxTemp = src.readDouble();
         mMinTemp = src.readDouble();
         mWindSpeed = src.readDouble();
+        mDistanceToMarker = src.readDouble();
 
         mName = src.readString();
         mWeatherDescription = src.readString();
@@ -89,6 +96,7 @@ public class CityModel implements Parcelable {
         dest.writeDouble(mMaxTemp);
         dest.writeDouble(mMinTemp);
         dest.writeDouble(mWindSpeed);
+        dest.writeDouble(mDistanceToMarker);
 
         dest.writeString(mName);
         dest.writeString(mWeatherDescription);

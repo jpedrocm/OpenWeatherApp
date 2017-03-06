@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import br.com.jpedrocm.openweatherapp.R;
 import br.com.jpedrocm.openweatherapp.adapters.CityListAdapter;
@@ -30,7 +33,7 @@ import br.com.jpedrocm.openweatherapp.models.CityModel;
 import br.com.jpedrocm.openweatherapp.utils.Utils;
 
 public class CityListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,
-        View.OnClickListener {
+        ToggleButton.OnCheckedChangeListener , View.OnClickListener {
 
     protected static final String CITY_KEY = "city";
 
@@ -40,6 +43,7 @@ public class CityListActivity extends AppCompatActivity implements AdapterView.O
     private AlertDialog mDialog;
     private TextView mDialogTextView;
     private Button mDialogButton;
+    private ToggleButton mToggleButton;
     private ListView mCityListView;
     private CityListAdapter mCityListAdapter;
 
@@ -77,6 +81,9 @@ public class CityListActivity extends AppCompatActivity implements AdapterView.O
 
         mDialogButton = (Button) dialogView.findViewById(R.id.btn_ok);
         mDialogButton.setOnClickListener(this);
+
+        mToggleButton = (ToggleButton) findViewById(R.id.btn_order_list);
+        mToggleButton.setOnCheckedChangeListener(this);
     }
 
     @Override
@@ -110,6 +117,7 @@ public class CityListActivity extends AppCompatActivity implements AdapterView.O
     }
 
     private void showDownloadDialog(){
+        mToggleButton.setVisibility(View.INVISIBLE);
         mDialogButton.setVisibility(View.INVISIBLE);
         mDialogTextView.setText(R.string.dialog_download_msg);
         mDialog.show();
@@ -136,7 +144,7 @@ public class CityListActivity extends AppCompatActivity implements AdapterView.O
         @Override
         public void onResponse(JSONObject response) {
             try {
-                mCities = (ArrayList<CityModel>) Utils.parseJSONData(response);
+                mCities = (ArrayList<CityModel>) Utils.parseJSONData(response, mCoords);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -159,5 +167,42 @@ public class CityListActivity extends AppCompatActivity implements AdapterView.O
         mCityListAdapter.addAll(mCities);
         mCityListView.setAdapter(mCityListAdapter);
         clickedDialogButton();
+        mToggleButton.setVisibility(View.VISIBLE);
+    }
+
+    private void resetListView(){
+        mCityListAdapter.clear();
+        mCityListAdapter.addAll(mCities);
+        mCityListView.setAdapter(mCityListAdapter);
+    }
+
+    public final Comparator<CityModel> nameComparator = new Comparator<CityModel>() {
+        @Override
+        public int compare(CityModel origin, CityModel ordered) {
+            String nameOrigin = origin.getName();
+            String nameOrdered = ordered.getName();
+
+            return nameOrigin.compareTo(nameOrdered);
+        }
+    };
+
+    public final Comparator<CityModel> distanceComparator = new Comparator<CityModel>() {
+        @Override
+        public int compare(CityModel origin, CityModel ordered) {
+            double distanceOrigin = origin.getDistanceToMarker();
+            double distanceOrdered = ordered.getDistanceToMarker();
+
+            return Double.compare(distanceOrigin, distanceOrdered);
+        }
+    };
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if(isChecked){
+            mCities = Utils.sortByGiven(mCities, nameComparator);
+        } else {
+            mCities = Utils.sortByGiven(mCities, distanceComparator);
+        }
+        resetListView();
     }
 }

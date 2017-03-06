@@ -42,6 +42,7 @@ public class CityListAdapter extends ArrayAdapter<CityModel> {
 
         holder.textViewName.setText(city.getName());
         holder.textViewTemp.setText(Utils.getTempString(city.getCurrentTemp(), Utils.TEMP_UNIT.Celsius));
+        holder.textViewDistance.setText(Utils.getDistanceString(city.getDistanceToMarker()));
 
         return view;
     }
@@ -49,10 +50,12 @@ public class CityListAdapter extends ArrayAdapter<CityModel> {
     private class ViewHolder {
         TextView textViewName;
         TextView textViewTemp;
+        TextView textViewDistance;
 
         private ViewHolder(View v){
             textViewName = (TextView) v.findViewById(R.id.tv_city_name);
             textViewTemp = (TextView) v.findViewById(R.id.tv_city_temp);
+            textViewDistance = (TextView) v.findViewById(R.id.tv_city_distance);
         }
     }
 }
